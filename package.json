@@ -1,0 +1,28 @@
+{
+  "name": "api-meriti-money",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tecweb2019/api-meriti-money.git"
+  },
+  "keywords": [
+    "meriti",
+    "money",
+    "pucminas"
+  ],
+  "author": "jhonatasFelipe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tecweb2019/api-meriti-money/issues"
+  },
+  "homepage": "https://github.com/tecweb2019/api-meriti-money#readme",
+  "dependencies": {
+    "express": "^4.17.0",
+    "mongoose": "^5.5.10"
+  }
+}
