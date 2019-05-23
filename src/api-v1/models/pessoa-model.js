@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import pessoaSchema from "../Schemas/pessoaSchema";
+import {pessoaSchemaDb} from "../Schemas/pessoa.schema";
 
 mongoose.connect("mongodb://localhost:27017/meriti-money", {useNewUrlParser: true})
 
-let schema = new mongoose.Schema( pessoaSchema);
+let schema = new mongoose.Schema( pessoaSchemaDb);
 
 let pessoaModel = mongoose.model('Pessoa',schema);
 
@@ -12,12 +12,11 @@ function inserir(parans,callback) {
     let pessoa = new pessoaModel(parans);
     pessoa.save((err)=>{
         if(err)return handleError(err);
-        console.log("salvei no banco ");
+        let message = "Pessoa inserida com sucesso";
         callback(message);
     });
 
 }
-
 function atualizar(params) {
 
 }
@@ -33,7 +32,27 @@ function listar(parans, callback){
         callback(err,pessoas);
     });
 }
+export function debitacoins(idDoador ,valorTranferido) {
 
+    let valorDebitado;
+    pessoaModel.findById(idDoador,(err,pessoa)=>{
+        if(err)return handleError(err);
+        let valorAtual = pessoa.qtdcoinstransf;
+        valorDebitado = valorAtual - valorTranferido;
+        pessoaModel.updateOne({ _id: idDoador },{qtdcoinstransf: valorDebitado },(err,result)=>{
+    });
+    });
+}
+export function creditacoins(idRecebedor ,valorTranferido) {
+     let valorCreditado;
+     pessoaModel.findById(idRecebedor,(err,pessoa)=> {
+         let valorAtual = pessoa.qtdcoins;
+         valorCreditado = valorAtual + valorTranferido;
+         pessoaModel.updateOne({ _id: idRecebedor },{ qtdcoins: valorCreditado },(err,result)=>{
+
+         });
+     });
+}
 export default {
   inserir,
   atualizar,
