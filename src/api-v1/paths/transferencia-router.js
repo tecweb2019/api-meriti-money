@@ -1,10 +1,13 @@
 import express from "express";
 import {validate} from "jsonschema";
+import cors from "cors";
 
 import transferenciaModel from "../models/transferencia-model";
 import {transferenciaSchemaValidate} from "../Schemas/transferencia.schema";
 
 const transferenciaRouter = express.Router();
+
+transferenciaRouter.use(cors());
 
 transferenciaRouter.post("/" ,(req, resp, next)=>{
     let verificaobj = validate(req.body,transferenciaSchemaValidate);

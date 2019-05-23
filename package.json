@@ -25,6 +25,7 @@
   "homepage": "https://github.com/tecweb2019/api-meriti-money#readme",
   "dependencies": {
     "body-parse": "^0.1.0",
+    "cors": "^2.8.5",
     "express": "^4.17.0",
     "jsonschema": "^1.2.4",
     "mongoose": "^5.5.10"

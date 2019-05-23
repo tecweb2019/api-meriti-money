@@ -1,10 +1,13 @@
 import express from "express";
 import {validate} from "jsonschema";
+import cors from "cors";
 
 import recompensaModel from "../models/recompensa-model";
 import {recompensaSchemaValidate} from "../Schemas/recompensa.schema";
 
 const recompensaRouter = express.Router();
+
+recompensaRouter.use(cors());
 
 recompensaRouter.post("/" ,(req, resp, next)=>{
     let verificaobj = validate(req.body,recompensaSchemaValidate);

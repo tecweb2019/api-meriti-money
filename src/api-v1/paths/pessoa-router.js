@@ -1,10 +1,13 @@
 import express from "express";
 import {validate} from "jsonschema";
+import cors from "cors";
 
 import pessoaModel from "../models/pessoa-model";
 import {pessoaSchemaValidate} from "../Schemas/pessoa.schema";
 
 const pessoaRouter = express.Router();
+
+pessoaRouter.use(cors());
 
 pessoaRouter.post("/" ,(req, resp, next)=>{
     let verificaobj = validate(req.body,pessoaSchemaValidate);
