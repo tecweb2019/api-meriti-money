@@ -11,6 +11,6 @@ app.use(bodyParse.urlencoded({extended : false}));
 app.use("/api/v1",apiRouter);
 
 
-app.listen(3000,()=>{
+app.listen(3001,()=>{
     console.log("servidor funcionando");
 });

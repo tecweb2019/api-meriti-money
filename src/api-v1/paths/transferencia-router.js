@@ -6,7 +6,7 @@ import {transferenciaSchemaValidate} from "../Schemas/transferencia.schema";
 
 const transferenciaRouter = express.Router();
 
-transferenciaRouter.put("/" ,(req, resp, next)=>{
+transferenciaRouter.post("/" ,(req, resp, next)=>{
     let verificaobj = validate(req.body,transferenciaSchemaValidate);
 
     if(verificaobj.errors.length > 0){

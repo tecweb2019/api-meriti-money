@@ -6,7 +6,7 @@ import {pessoaSchemaValidate} from "../Schemas/pessoa.schema";
 
 const pessoaRouter = express.Router();
 
-pessoaRouter.put("/" ,(req, resp, next)=>{
+pessoaRouter.post("/" ,(req, resp, next)=>{
     let verificaobj = validate(req.body,pessoaSchemaValidate);
 
     if(verificaobj.errors.length > 0){
@@ -24,10 +24,10 @@ pessoaRouter.get("/",(req,resp,next)=>{
         if(erro)
             resp.status(500).send(erro.message);
         else
-            if(data.length > 0 )
-                resp.json(data);
-            else
-                resp.status(404).json({'message': 'nenhum registro encontrado'});
+        if(data.length > 0 )
+            resp.json(data);
+        else
+            resp.status(404).json({'message': 'nenhum registro encontrado'});
     });
 });
 

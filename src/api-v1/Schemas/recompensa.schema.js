@@ -1,6 +1,5 @@
-export const recompensaSchema = {
-   // descri : Text,
-    //price : Number,
+export const recompensaSchemaValidate = {
+
 
     "required":[ "descri" ,"price" ],
     "type": "object",
@@ -16,3 +15,9 @@ export const recompensaSchema = {
 
     }
 };
+
+export const recompensaSchemaDb = {
+    descri : String,
+    price : Number,
+} ;
+
