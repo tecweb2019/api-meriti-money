@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import {recompensaSchemaDb } from "../Schemas/recompensa.schema";
+import {configdb} from "../../../config/config-db";
 
-mongoose.connect("mongodb://localhost:27017/meriti-money", {useNewUrlParser: true})
+mongoose.connect(configdb.stringConnection, {useNewUrlParser: true});
 
 let schema = new mongoose.Schema(recompensaSchemaDb);
 
