@@ -39,10 +39,15 @@ export function debitacoins(idDoador ,valorTranferido) {
     let valorDebitado;
     pessoaModel.findById(idDoador,(err,pessoa)=>{
         if(err)return handleError(err);
+
         let valorAtual = pessoa.qtdcoinstransf;
+        if(valorAtual > valorTranferido){
         valorDebitado = valorAtual - valorTranferido;
         pessoaModel.updateOne({ _id: idDoador },{qtdcoinstransf: valorDebitado },(err,result)=>{
     });
+        return true;
+        }
+        return false;
     });
 }
 export function creditacoins(idRecebedor ,valorTranferido) {
@@ -60,7 +65,14 @@ function pegaporid(id){
     let promisse = new Promise((resolve, reject)=>{
         let pessoa = pessoaModel.findById(id, (err, pessoa) => {
         });
-        resolve(pessoa);
+        if(!pessoa){
+            resolve(null);
+            reject("Usuario não encontrado");
+        }
+        else{
+            resolve(pessoa);
+            reject(null);
+        }
     });
     return promisse;
 }
@@ -74,6 +86,8 @@ function verificaSenha( passwordBody ,senhaBanco,callback){
     }
     return callback(err ,result);
 }
+
+
 export default {
   inserir,
   atualizar,

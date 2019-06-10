@@ -16,8 +16,12 @@ transferenciaRouter.post("/" ,(req, resp, next)=>{
         resp.status(400).json( {'message':"Bad request " + verificaobj.errors[0].message });
     }
     else {
-        transferenciaModel.inserir(req.body, (message) => {
-            resp.status(201).json({'message': message});
+        transferenciaModel.inserir(req.body, (result,message) => {
+           if(result) {
+               resp.status(201).json({'message': message});
+           }else{
+               resp.status(500).json({'message': message});
+           }
         });
     }
 });
@@ -35,7 +39,7 @@ transferenciaRouter.get("/",(req,resp,next)=>{
 
      for(let i = 0;i < transf.length;i++){
 
-         //transf[i].doador = await pessoaModel.pegaporid(transf[i].doador);
+         transf[i].doador = await pessoaModel.pegaporid(transf[i].doador);
          transf[i].recebedor = await pessoaModel.pegaporid(transf[i].recebedor);
      }
      return transf;

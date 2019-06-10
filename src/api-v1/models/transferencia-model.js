@@ -11,14 +11,17 @@ let transferenciaModel = mongoose.model('transferencias',transferenciaschema);
 
 function inserir(parans,callback) {
     let transferencia = new transferenciaModel(parans);
-    debitacoins(parans.doador,parans.qtdcoinstransf);
-    creditacoins(parans.recebedor,parans.qtdcoinstransf);
-    transferencia.save((err)=>{
-        if(err)return handleError(err);
-        let message = "Tranferencia realizada com sucesso!";
-        callback(message);
-    });
+    if(debitacoins(parans.doador,parans.qtdcoinstransf)){
+        creditacoins(parans.recebedor,parans.qtdcoinstransf);
+        transferencia.save((err)=>{
+            if(err)return handleError(err);
 
+            callback(true,"Tranferencia realizada com sucesso!");
+        });
+    }
+    else{
+        callback(false , "Saldo insulficiente!");
+    }
 }
 
 function listar(parans){

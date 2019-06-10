@@ -23,11 +23,23 @@ pessoaRouter.post("/",auth.authenticate(),(req, resp)=>{
     }
 });
 
+pessoaRouter.get("/me/",auth.authenticate(),(req,resp)=>{
+    resp.status(200).json({
+        status: true,
+        user: req.user
+    })
+});
+
 pessoaRouter.get("/:id",auth.authenticate(),(req,resp,next)=>{
     if(req.params){
        pessoaModel.pegaporid(req.params.id).then(pessoa=>{
            resp.json(pessoa);
-       });
+       }).catch(error =>{
+           resp.status(404).json({
+               status: false,
+               err : error
+           });
+       })
     }
 });
 
