@@ -9,11 +9,11 @@ export const transferenciaSchemaValidate = {
     "properties": {
         "doador":{
             "type" : "string",
-            "description" : "_id da pessoa que doou as moedas"
+            "description" : " pessoa que doou as moedas"
         },
         "recebedor":{
             "type" : "string",
-            "description" : "_id da pessoa que recebeu as moedas"
+            "description" : " pessoa que recebeu as moedas"
         },
         "qtdcoinstransf":{
             "type" : "number",
@@ -28,8 +28,8 @@ export const transferenciaSchemaValidate = {
 };
 
 export const transferenciaSchemaDb = {
-    "doador": String ,
-    "recebedor": String ,
+    "doador": Object ,
+    "recebedor": Object  ,
     "qtdcoinstransf": Number,
     "motivo": String
 };

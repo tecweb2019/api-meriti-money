@@ -4,7 +4,7 @@ import cors from "cors";
 
 import transferenciaModel from "../models/transferencia-model";
 import {transferenciaSchemaValidate} from "../Schemas/transferencia.schema";
-
+import pessoaModel from "../models/pessoa-model";
 const transferenciaRouter = express.Router();
 
 transferenciaRouter.use(cors());
@@ -23,16 +23,22 @@ transferenciaRouter.post("/" ,(req, resp, next)=>{
 });
 
 transferenciaRouter.get("/",(req,resp,next)=>{
-    transferenciaModel.listar({},(erro,data)=>{
-        if(erro)
-            resp.status(500).send(erro.message);
-        else
-        if(data.length > 0 )
-            resp.json(data);
-        else
-            resp.status(404).json({'message': 'nenhum registro encontrado'});
-    });
+    joinPessoaTransf()
+        .then(resposta =>{
+            resp.json(resposta);
+        });
 });
 
+ async function joinPessoaTransf(){
+
+     let transf = await transferenciaModel.listar();
+
+     for(let i = 0;i < transf.length;i++){
+
+         //transf[i].doador = await pessoaModel.pegaporid(transf[i].doador);
+         transf[i].recebedor = await pessoaModel.pegaporid(transf[i].recebedor);
+     }
+     return transf;
+}
 
 export default transferenciaRouter;

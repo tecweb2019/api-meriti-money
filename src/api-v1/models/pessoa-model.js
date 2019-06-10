@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import {pessoaSchemaDb} from "../Schemas/pessoa.schema";
+import {pessoaSchemaDb, pessoaSchemaValidate} from "../Schemas/pessoa.schema";
 import {configdb} from "../../../config/config-db";
 
 //mongoose.connect("mongodb://localhost:27017/meriti-money", {useNewUrlParser: true});
 mongoose.connect(configdb.stringConnection, {useNewUrlParser: true});
 
-let schema = new mongoose.Schema( pessoaSchemaDb);
+let schema = new mongoose.Schema( pessoaSchemaValidate);
 
 let pessoaModel = mongoose.model('Pessoa',schema);
 
@@ -55,9 +55,30 @@ export function creditacoins(idRecebedor ,valorTranferido) {
          });
      });
 }
+
+function pegaporid(id){
+    let promisse = new Promise((resolve, reject)=>{
+        let pessoa = pessoaModel.findById(id, (err, pessoa) => {
+        });
+        resolve(pessoa);
+    });
+    return promisse;
+}
+
+
+function verificaSenha( passwordBody ,senhaBanco,callback){
+    let result  =  passwordBody === senhaBanco ? true : false;
+    let err = null;
+    if(!result){
+        err = { message: "senha incorreta" };
+    }
+    return callback(err ,result);
+}
 export default {
   inserir,
   atualizar,
   deletar,
   listar,
+    pegaporid,
+    verificaSenha
 };

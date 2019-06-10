@@ -1,6 +1,7 @@
 import express from "express";
-import {validate} from "jsonschema";
+import { validate } from "jsonschema";
 import cors from "cors";
+import auth from "./auth.js";
 
 import pessoaModel from "../models/pessoa-model";
 import {pessoaSchemaValidate} from "../Schemas/pessoa.schema";
@@ -9,7 +10,7 @@ const pessoaRouter = express.Router();
 
 pessoaRouter.use(cors());
 
-pessoaRouter.post("/" ,(req, resp, next)=>{
+pessoaRouter.post("/",auth.authenticate(),(req, resp)=>{
     let verificaobj = validate(req.body,pessoaSchemaValidate);
 
     if(verificaobj.errors.length > 0){
@@ -22,12 +23,19 @@ pessoaRouter.post("/" ,(req, resp, next)=>{
     }
 });
 
-pessoaRouter.get("/",(req,resp,next)=>{
-    pessoaModel.listar({},(erro,data)=>{
-        if(erro)
+pessoaRouter.get("/:id",auth.authenticate(),(req,resp,next)=>{
+    if(req.params){
+       pessoaModel.pegaporid(req.params.id).then(pessoa=>{
+           resp.json(pessoa);
+       });
+    }
+});
+
+pessoaRouter.get("/",auth.authenticate(),(req,resp,next)=>{
+    pessoaModel.listar({}, (erro, data) => {
+        if (erro)
             resp.status(500).send(erro.message);
-        else
-        if(data.length > 0 )
+        else if (data.length > 0)
             resp.json(data);
         else
             resp.status(404).json({'message': 'nenhum registro encontrado'});

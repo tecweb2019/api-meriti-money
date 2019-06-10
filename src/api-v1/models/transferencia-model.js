@@ -20,15 +20,16 @@ function inserir(parans,callback) {
     });
 
 }
-function listar(parans, callback){
-    transferenciaModel.find(parans,(err,transferencias)=>{
-        if(err)return handleError(err);
-        callback(err,transferencias);
+
+function listar(parans){
+    let promise = new Promise((resolve,reject)=>{
+        let trasnf = transferenciaModel.find(parans,(err,transferencias)=>{
+            if(err)return handleError(err);
+        });
+        resolve(trasnf);
     });
+    return promise;
 }
-
-
-
 
 export default {
     inserir,
