@@ -10,20 +10,26 @@ const pessoaRouter = express.Router();
 
 pessoaRouter.use(cors());
 
-pessoaRouter.post("/",auth.authenticate(),(req, resp)=>{
+pessoaRouter.post("/",(req, resp)=>{
     let verificaobj = validate(req.body,pessoaSchemaValidate);
+    pessoaModel.listar({"login.email":req.body.login.email},(erro,pessoa)=>{
+    if(!pessoa[0]) {
+        if (verificaobj.errors.length > 0) {
+            resp.status(400).json({'message': "Bad request " + verificaobj.errors[0].message});
+        }
+        else {
+            pessoaModel.inserir(req.body, (message) => {
+                resp.status(201).json({'message': message});
+            });
+        }
+    }else{
+        resp.status(500).json({'message': "E-mail já cadastrado"});
+    }
 
-    if(verificaobj.errors.length > 0){
-        resp.status(400).json( {'message':"Bad request " + verificaobj.errors[0].message });
-    }
-    else {
-        pessoaModel.inserir(req.body, (message) => {
-            resp.status(201).json({'message': message});
-        });
-    }
+    })
 });
 
-pessoaRouter.get("/me/",auth.authenticate(),(req,resp)=>{
+pessoaRouter.get("/me",auth.authenticate(),(req,resp)=>{
     resp.status(200).json({
         status: true,
         user: req.user
@@ -40,6 +46,20 @@ pessoaRouter.get("/:id",auth.authenticate(),(req,resp,next)=>{
                err : error
            });
        })
+    }
+});
+
+pessoaRouter.get("/listausuarios/:email",auth.authenticate(),(req,resp,next)=>{
+    if(req.params){
+        pessoaModel.listaSemUsuarioLogado(req.params.email,(error,pessoa)=>{
+            if(!pessoa) {
+                resp.status(404).json({
+                    status: false,
+                    err: error
+                });
+            }
+            resp.status(200).json(pessoa);
+        })
     }
 });
 
